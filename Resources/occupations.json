@@ -1,0 +1,98 @@
+[
+  {
+    "Name": "Photographer",
+    "Risk": 0.05,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Gardening",
+    "Risk": 0.08,
+    "OccupationType": "Hobby"
+  },
+  {
+    "Name": "Chef",
+    "Risk": 0.1,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Fishing",
+    "Risk": 0.05,
+    "OccupationType": "Hobby"
+  },
+  {
+    "Name": "Software Developer",
+    "Risk": 0.04,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Military",
+    "Risk": 0.3,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Teacher",
+    "Risk": 0,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Parachutist",
+    "Risk": 0.5,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Diving",
+    "Risk": 0.1,
+    "OccupationType": "Hobby"
+  },
+  {
+    "Name": "MotorRider",
+    "Risk": 0.2,
+    "OccupationType": "Hobby"
+  },
+  {
+    "Name": "Football",
+    "Risk": 0.3,
+    "OccupationType": "Hobby"
+  },
+  {
+    "Name": "Yoga",
+    "Risk": 0.05,
+    "OccupationType": "Hobby"
+  },
+  {
+    "Name": "Hiking",
+    "Risk": 0.3,
+    "OccupationType": "Hobby"
+  },
+  {
+    "Name": "Painting",
+    "Risk": 0.02,
+    "OccupationType": "Hobby"
+  },
+  {
+    "Name": "Firefighter",
+    "Risk": 0.4,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Police Officer",
+    "Risk": 0.5,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Construction Worker",
+    "Risk": 0.6,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Miner",
+    "Risk": 0.35,
+    "OccupationType": "Profession"
+  },
+  {
+    "Name": "Logger",
+    "Risk": 0.25,
+    "OccupationType": "Profession"
+  }
+
+]
