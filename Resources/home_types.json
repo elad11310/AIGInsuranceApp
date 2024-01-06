@@ -1,0 +1,29 @@
+[
+  {
+    "HomeType": "SingleFamilyHome",
+    "PriceSquareMeter": 5
+
+  },
+  {
+    "HomeType": "Duplex",
+    "PriceSquareMeter": 8
+
+  },
+  {
+    "HomeType": "Mansion",
+    "PriceSquareMeter": 10
+
+
+  },
+  {
+    "HomeType": "Cottage",
+    "PriceSquareMeter": 12
+
+  },
+  {
+    "HomeType": "Villa",
+    "PriceSquareMeter": 14
+
+  }
+
+]

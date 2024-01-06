@@ -1,6 +1,6 @@
 ﻿namespace AIGInsuranceApp
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -59,8 +59,8 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.UIButton);
             this.Controls.Add(this.ExcelButton);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Main Form";
+            this.Text = "Main Form";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 

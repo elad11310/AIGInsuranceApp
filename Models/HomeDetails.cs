@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AIGInsuranceApp.Models
 {
-    public interface IPolicyDetails
+    public class HomeDetails
     {
 
-        string CalculatePolicy();
 
-        void AddUIFields(Form form);
+        public HomeType HomeType { get; set; }
+        
+
+        public int PriceSquareMeter { get; set; }
+
+
+
 
     }
 }

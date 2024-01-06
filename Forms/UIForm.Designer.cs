@@ -28,20 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnBack = new System.Windows.Forms.Button();
             this.HomeInsuranceButton = new System.Windows.Forms.Button();
             this.LifeInsuranceButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // btnBack
-            // 
-            this.btnBack.Location = new System.Drawing.Point(12, 12);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(60, 33);
-            this.btnBack.TabIndex = 0;
-            this.btnBack.Text = "←";
-            this.btnBack.UseVisualStyleBackColor = true;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // HomeInsuranceButton
             // 
@@ -70,7 +59,6 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.LifeInsuranceButton);
             this.Controls.Add(this.HomeInsuranceButton);
-            this.Controls.Add(this.btnBack);
             this.Name = "UIForm";
             this.Text = "UIForm";
             this.ResumeLayout(false);
@@ -78,8 +66,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.Button HomeInsuranceButton;
         private System.Windows.Forms.Button LifeInsuranceButton;
     }

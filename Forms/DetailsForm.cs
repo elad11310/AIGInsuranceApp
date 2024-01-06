@@ -1,13 +1,10 @@
 ﻿using AIGInsuranceApp.Models;
-using Newtonsoft.Json;
+using AIGInsuranceApp.StaticData;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,6 +18,9 @@ namespace AIGInsuranceApp.Forms
         private const int YOFFSET = 40;
         private List<string> citiesList = new List<string>();
         private string API_KEY = string.Empty;
+        private ComboBox streets;
+        private Timer timer;
+        private bool typedStreet = false;
 
         public DetailsForm(BasePolicyDetails policy)
         {
@@ -28,30 +28,20 @@ namespace AIGInsuranceApp.Forms
             _policy = policy;
             _genderList = new List<Gender> { Gender.Male, Gender.Female, };
             // Read API key
-
-
-            API_KEY = _policy.ReadFromFile("C:\\Users\\elad1\\source\\repos\\AIGInsuranceApp\\Resources\\api_key.txt");
-
+            API_KEY = Helper.ReadFromFile(Helper.GetFilePath("Resources", "api_key.txt"));
             InitAddressForm();
 
 
 
+            // Initialize and set up the timer for user typing in street field
+            timer = new Timer();
+            timer.Interval = 500;
+            timer.Tick += Timer_Tick;
 
         }
 
 
 
-
-        public static DirectoryInfo TryGetSolutionDirectoryInfo(string currentPath = null)
-        {
-            var directory = new DirectoryInfo(
-                currentPath ?? Directory.GetCurrentDirectory());
-            while (directory != null && !directory.GetFiles("*.sln").Any())
-            {
-                directory = directory.Parent;
-            }
-            return directory;
-        }
         private async Task InitCities()
         {
 
@@ -67,15 +57,25 @@ namespace AIGInsuranceApp.Forms
             string nextPageToken = string.Empty;
             do
             {
-                var res = await _policy.MakeAPIRequest(baseUrl, parameters);
+               
+                var res = await Helper.MakeAPIRequest(baseUrl, parameters);
                 if (!string.IsNullOrEmpty(res))
                 {
                     JObject jsonObject = JObject.Parse(res);
-                    // nextPageToken = jsonObject["next_page_token"].ToString();
-                    // if (!string.IsNullOrEmpty(nextPageToken))
-                    // {
-                    //  parameters.Add(new KeyValuePair<string, string>("next_page_token", nextPageToken));
-                    // }
+                    if (jsonObject.ContainsKey("next_page_token"))
+                    {
+                        nextPageToken = jsonObject["next_page_token"].ToString();
+                        if (!string.IsNullOrEmpty(nextPageToken))
+                        {
+                            parameters.Add(new KeyValuePair<string, string>("pagetoken", nextPageToken));
+                        }
+
+                    }
+                    else
+                    {
+                        nextPageToken = string.Empty;
+                    }
+                   
 
                     // Accessing all the 'name' attributes
                     JArray results = (JArray)jsonObject["results"];
@@ -153,11 +153,9 @@ namespace AIGInsuranceApp.Forms
             _policy.AddController(streetLabel, addressPopupForm, XOFFSET, YOFFSET, false);
 
 
-            ComboBox streets = new ComboBox();
+            streets = new ComboBox();
+            streets.TextChanged += ComboBox_TextChanged;
 
-            streets.Items.Add("Reading");
-            streets.Items.Add("Gardening");
-            streets.Items.Add("Hiking");
             _policy.AddController(streets, addressPopupForm, XOFFSET, YOFFSET, false);
 
 
@@ -207,7 +205,7 @@ namespace AIGInsuranceApp.Forms
                     ApartmentNumber = apartmentNumberInput.Text,
                     Floor = floorInput.Text,
                     City = cities.SelectedItem.ToString(),
-                    Street = streets.SelectedItem.ToString()
+                    Street = streets.Text.ToString().TrimEnd(' ')
 
                 };
 
@@ -224,7 +222,7 @@ namespace AIGInsuranceApp.Forms
         private void DetailsForm_Load(object sender, EventArgs e)
         {
             // Allowing only numbers in the user identity number input
-            IdInput.KeyPress += NumericInputValidation;
+            IdInput.KeyPress += _policy.NumericInputValidation;
             // populating the gender list box with data
             GenderListBox.DataSource = _genderList;
 
@@ -234,19 +232,59 @@ namespace AIGInsuranceApp.Forms
 
         }
 
-        private void NumericInputValidation(object sender, KeyPressEventArgs e)
+
+        private async void Timer_Tick(object sender, EventArgs e)
         {
-            // Allow only numbers and control keys (like backspace) in the TextBox
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            string enteredText = streets.Text.Trim();
+
+            // Make an API request based on the entered text
+            if (!string.IsNullOrEmpty(enteredText) && typedStreet)
             {
-                e.Handled = true;
+                streets.Items.Clear();
+                string baseUrl = "https://data.gov.il/api/3/action/datastore_search";
+
+                List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>
+                    {
+                        new KeyValuePair<string, string>("resource_id", "1b14e41c-85b3-4c21-bdce-9fe48185ffca"),
+                        new KeyValuePair<string, string>("limit", "50"),
+                        new KeyValuePair<string, string>("q", enteredText)
+
+                    };
+
+                var res = await Helper.MakeAPIRequest(baseUrl, parameters);
+                if (!string.IsNullOrEmpty(res))
+                {
+                    JObject jsonObject = JObject.Parse(res);
+
+                    // Accessing all the 'name' attributes
+                    JArray results = (JArray)jsonObject["result"]["records"];
+                    foreach (JToken result in results)
+                    {
+                        string name = (string)result["street_name"];
+                        if (!streets.Items.Contains(name))
+                            streets.Items.Add(name);
+                    }
+                }
+                typedStreet = false;
+
             }
+
+
         }
+
+        private void ComboBox_TextChanged(object sender, EventArgs e)
+        {
+            typedStreet = true;
+            timer.Stop();
+            timer.Start();
+
+        }
+
 
         private void CalculateBtn_Click(object sender, EventArgs e)
         {
             _policy.SetDefaultDetails(this);
-            _policy.Calculate();
+            _policy.Calculate(UIRequest:true);
 
             if (_policy is LifeInsurancePolicyDetails)
             {
@@ -264,8 +302,12 @@ namespace AIGInsuranceApp.Forms
                     MessageBox.Show($"The price for this policy is {_policy.PolicyPrice:F3}$");
                 }
             }
+            else
+            {
+                MessageBox.Show($"The price for this policy is {_policy.PolicyPrice:F3}$");
+            }
         }
 
-   
+
     }
 }

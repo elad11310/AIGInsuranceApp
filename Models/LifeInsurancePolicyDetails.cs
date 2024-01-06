@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using AIGInsuranceApp.StaticData;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,10 +17,11 @@ namespace AIGInsuranceApp.Models
         private string selectedProfession = string.Empty;
         private const int XOFFSET = 40;
         private const int YOFFSET = 40;
-        private List<Occupation> occupationsList = new List<Occupation>();
+        public List<Occupation> occupationsList = new List<Occupation>();
         public LifeInsurancePolicyDetails()
         {
-            string occupationStr = ReadFromFile("C:\\Users\\elad1\\source\\repos\\AIGInsuranceApp\\Resources\\occupations.json");
+
+            string occupationStr = Helper.ReadFromFile(Helper.GetFilePath("Resources", "occupations.json"));
             InitOccupations(occupationStr);
             BasicPrice = 10;
         }
@@ -118,7 +121,6 @@ namespace AIGInsuranceApp.Models
             };
 
 
-            // read from db 
             ComboBox professionList = new ComboBox();
             professionList.Items.AddRange(
                 occupationsList.
@@ -133,7 +135,7 @@ namespace AIGInsuranceApp.Models
             AddController(professionLabel, form, XOFFSET, YOFFSET, isFirstTime: false);
             AddController(professionList, form, XOFFSET, YOFFSET, isFirstTime: false);
 
-            // Subscribe to the ItemCheck event or perform any other setup here
+            // Subscribe to the ItemCheck 
             professionList.SelectedIndexChanged += new EventHandler((sender, e) => SelectedIndexChanged(
             sender,
             e,
@@ -141,14 +143,21 @@ namespace AIGInsuranceApp.Models
             ref selectedProfession));
         }
 
-        protected override void CalculatePolicy()
+        protected override void CalculatePolicy(bool UIRequest)
         {
             int daysForPolicy = (EndDate - StartDate).Days;
-            Hobbies = selectedHobbies;
-            Profession = occupationsList.Where(o => o.Name == selectedProfession).FirstOrDefault();
+            // Only in case it's from UI
+            if (UIRequest)
+            {
+                Hobbies = selectedHobbies;
+                Profession = occupationsList.Where(o => o.Name == selectedProfession).FirstOrDefault();
+            }
+
             PolicyPrice = daysForPolicy * BasicPrice
                 + daysForPolicy * ((Profession.Risk + Hobbies.Sum(o => o.Risk)) * BasicPrice)
                 + daysForPolicy * GetPriceByAge(BasicPrice, Age);
+
+
         }
     }
 }
