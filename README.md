@@ -31,7 +31,7 @@
 
  **API:**
 
- 1. The cities are fetched using Google api - There is an API key inside Resources folder.
+ 1. The cities are fetched using Google API - There is an API key inside Resources folder.
  2. The streets are fetched using another API which is only Hebrew result supportive - In the Streets combo box please type Hebrew letters, Then you will see dynamically results based on the text
    
     
