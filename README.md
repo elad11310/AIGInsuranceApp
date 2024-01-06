@@ -23,8 +23,8 @@
 
  2. Calculate home insurance policy based on the following formula:  
     PolicyPrice = daysForPolicy * BasicPrice
-  + daysForPolicy * (HomeDetails.PriceSquareMeter* SizeSquareMeter)
-  + daysForPolicy * GetPriceByAge(BasicPrice, HomeAge);
+  \+ daysForPolicy * (HomeDetails.PriceSquareMeter* SizeSquareMeter)
+  \+ daysForPolicy * GetPriceByAge(BasicPrice, HomeAge);
 
  3. Calculate the above policies within .xlsx file (Please run the application as administrator)
 
