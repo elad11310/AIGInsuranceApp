@@ -16,12 +16,12 @@
 
  **Capabilities:**
 
- 1. Calculate life insurance policy based on the following formula :
+ 1. Calculate life insurance policy based on the following formula :  
     PolicyPrice = daysForPolicy * BasicPrice
    + daysForPolicy * ((Profession.Risk + Hobbies.Sum(o => o.Risk)) * BasicPrice)
    + daysForPolicy * GetPriceByAge(BasicPrice, Age);
 
- 2. Calculate home insurance policy based on the following formula:
+ 2. Calculate home insurance policy based on the following formula:  
     PolicyPrice = daysForPolicy * BasicPrice
   + daysForPolicy * (HomeDetails.PriceSquareMeter* SizeSquareMeter)
   + daysForPolicy * GetPriceByAge(BasicPrice, HomeAge);
