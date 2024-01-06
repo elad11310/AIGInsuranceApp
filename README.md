@@ -1,6 +1,6 @@
 # AIGInsuranceApp
 
-![Uploading image.png…]()
+![image](https://github.com/elad11310/AIGInsuranceApp/assets/57447475/ba051772-a757-4c73-b84f-fcf2277aa45c)
 
 
 
