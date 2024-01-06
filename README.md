@@ -10,8 +10,8 @@
 
 1. Clone this project.  
 2. There is a Resources folder in the project and there are 2 json files inside:  
-    a)occupations.json - can dynamically add new profession/hobby  
-    b)home_types - can chnage each home type price  
+    a) occupations.json - can dynamically add new profession/hobby  
+    b) home_types - can chnage each home type price  
 3. There is also .xlsx file example for calculating policies based on the file input     
 
  **Capabilities:**
